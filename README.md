@@ -73,3 +73,17 @@
 
 [Site do TypeScript](https://www.typescriptlang.org/pt/)
 
+* comandos para compilar:
+```
+tsc <nome do arquivo>
+tsc <nome do arquivo> --watch
+```
+* O comando com o ```watch``` manterá o compilador assistindo ao arquivo.
+
+## 4. Criando e configurando TSconfig
+
+* Para criar o arquivo de configuração "tsconfig.json" utilizamos o comando:
+```
+tsc --init
+```
+* A partir da criação deste arquivo, podemos compilar utilizando apenas o comando ```tsc``` ou ```tsc --watch```.
