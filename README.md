@@ -143,3 +143,12 @@ cart = {
   key: 'fi',
 }
 ```
+
+## 6. Type Inference
+
+* Em alguns momentos eu posso declarar a variável e já atribuir um valor, o TypeScript automaticamnente irá inferir o tipo de acordo com o valor passado a variável.
+
+```typescrip
+let msg = 'mensagem definida';
+msg = 'nova string';
+```
