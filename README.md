@@ -68,3 +68,8 @@
 * Ele é verboso demais, precisa tipar tudo. **falso**
 * Só serve para projetos grandes. **falso**
 * É só usar *PropTypes* que dá na mesma. **falso**
+
+## 3. Instalando o compilador e escrevendo primeiro código
+
+[Site do TypeScript](https://www.typescriptlang.org/pt/)
+
