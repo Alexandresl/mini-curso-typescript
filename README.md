@@ -180,3 +180,100 @@ logDetails('123', "sapato");
 logInfo(123, 'William');
 logInfo('123', 'William');
 ```
+
+## 8. Estendendo Type Aliases com Intersection
+
+```typescript
+// accountInfo
+// charInf
+// PlayerInfo
+
+type AccountInfo = {
+    id: number;
+    name: string;
+    email?: string;
+}
+
+type charInfo = {
+    nickname: string;
+    level: number;
+}
+
+// intersection
+type PlayerInfo = AccountInfo & charInfo;
+
+const Account: AccountInfo = {
+    id: 123,
+    name: 'Willian',
+    email: 'willianJusten@gmail.com'
+}
+
+const char: charInfo = {
+    nickname: 'will',
+    level: 100
+}
+
+const player: PlayerInfo = {
+    id: 123,
+    name: 'alexandre',
+    nickname: 'alex',
+    level: 123,
+}
+```
+
+## 9. Classes
+
+```typescript
+abstract class UserAccount {
+    public name: string;
+    protected age: number;
+
+    constructor(name: string, age: number) {
+        this.name = name;
+        this.age = age;
+    }
+
+    logDatails(): void {
+        console.log(`The player ${this.name} is ${this.age} years old.`);
+    }
+}
+
+class CharAccount extends UserAccount {
+    private nickname: string;
+    level: number;
+    constructor(name: string, age: number, nickname: string, level:number) {
+        super(name, age);
+        this.nickname = nickname;
+        this.level = level;
+    }
+
+    get getLevel() {
+        console.log('---------GET---------');
+        return this.level;
+    }
+
+    set setLevel(level: number) {
+        this.level = level;
+    }
+
+    logCharDetails(): void {
+        console.log(`The player ${this.name} is ${this.age} and has the char ${this.nickname} at level ${this.level}`);   
+    }
+}
+
+// const will = new UserAccount('william', 30);
+
+// console.log(will);
+// console.log(will.age);
+// will.logDatails();
+
+const john = new CharAccount('john', 45, 'jj', 80);
+console.log(john.name);
+// john.nickname = 'william';
+console.log(john.level);
+john.logDatails();
+john.logCharDetails();
+console.log(john.getLevel);
+john.setLevel = 81;
+console.log(john.getLevel);
+```
