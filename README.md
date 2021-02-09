@@ -333,3 +333,194 @@ class CreateGame implements Game {
     }
 }
 ```
+
+## 11. Type Alias VS Interface
+
+* **Type Alias** (utilizar na maioria das vezes)
+    * Menos verboso.
+    * mais simples para extender
+    * permite trabalhar com tipos primitivos
+    * React - Props
+* **Interfaces**
+    * Quando estiver criando libs, prefira interface, porque são mais estensíveis.
+    * Quando estiver trabalhando com POO
+
+## 12. Generics
+
+```typescript
+// S => State
+// T => Type
+// K => Key
+// V => Value
+// E => Element
+
+function useState<S extends number | string = string>() {
+    let state: S;
+    function getState() {
+        return state;
+    }
+    function setState(newState: S) {
+        state = newState;
+    }
+    return { getState, setState };
+}
+
+const newState = useState();
+
+newState.setState("foo");
+console.log(newState.getState());
+
+// newState.setState(123);
+// console.log(newState.getState());
+```
+
+## 13. Type Utilities
+
+```typescript
+type Todo = {
+    title: string;
+    description: string;
+    completed: boolean;
+}
+
+// Readonly
+const todo: Readonly<Todo> = {
+    title: "Assistir Dark novamente",
+    description: 'Relembrar os detalhes',
+    completed: false
+}
+
+console.log(todo);
+
+function updateTodo(todo: Todo, fieldsToUpdate: Partial<Todo>) {
+    return {
+        ...todo,
+        ...fieldsToUpdate
+    }
+}
+const todo2: Todo = updateTodo(todo, { completed: true })
+
+console.log(todo2);
+
+// Pick
+type TodoPreview = Pick<Todo, "title" | "completed">
+
+const todo3: TodoPreview = {
+    title: "Fechar Ghost of Tsushima",
+    completed: false,
+}
+
+// Omit
+type TodoPreview2 = Omit<Todo, "description">
+
+const todo4: TodoPreview2 = {
+    title: "Fechar Ghost of Tsushima",
+    completed: false,
+}
+```
+
+## 14. Decorators
+
+```typescript
+// @Component
+// @Selector
+// @useState('dasdas')
+
+// Factory
+
+function Logger(prefix: string) {
+    return (target: any) => {
+        console.log(`${prefix} - ${target}`);
+    }
+}
+
+@Logger('awesome')
+class Foo {}
+
+// Class decorator
+
+function setAPIVersion(apiVersionn: string) {
+    return (constructor: any) => {
+        return class extends constructor {
+            version = apiVersionn;
+        }
+    }
+}
+
+// decorator - anotar a versão da API
+@setAPIVersion('1.0.0')
+class API {}
+
+console.log(new API);
+
+// Property decorator
+
+function minLength(length: number) {
+    return (target: any, key: string) => {
+        let val = target[key];
+        const getter = () => val;
+        const setter = (value: string) => {
+            if (value.length < length) {
+                console.log(`Error: Você não pode criar ${key} com tamanho menor que ${length}`);
+            } else {
+                val = value;
+            }
+        }
+        Object.defineProperty(target, key, {
+            get: getter,
+            set: setter,
+        });
+    };
+}
+
+class Movie {
+    // validação - se for menor que 5 - error
+    @minLength(5)
+    title: string;
+
+    constructor(t: string) {
+        this.title = t;
+    }
+}
+
+const movie = new Movie('Interestrellar');
+console.log(movie.title);
+
+
+// Method decorator
+
+function delay(ms: number) {
+    return (target: any, key: string, descriptor: PropertyDescriptor) => {
+        const originalMethod = descriptor.value;
+        descriptor.value = function (...args: any) {
+            console.log(`Esperando ${ms}...`);
+            setTimeout(() => {
+                originalMethod.apply(this, args);
+            }, ms);
+            return descriptor;
+        }
+    };
+}
+
+class Greeter {
+    greeting: string;
+
+    constructor(g: string) {
+        this.greeting = g;
+    }
+
+    // Esperar um tempo e aí vai rodar o métdodo
+    @delay(5000)
+    greet() {
+        console.log(`Hello ${this.greeting}`);
+        
+    }
+}
+
+const pessoinha = new Greeter("Pessoinha");
+
+pessoinha.greet();
+
+// Parameter decorator
+// Acessor decorator
+```
